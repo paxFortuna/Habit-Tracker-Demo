@@ -1,4 +1,3 @@
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -12,7 +11,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   // overall habit summary
   List<dynamic> habitList = [
     // [ habitName, habitStarted, timeSpent(sec), timeGoal(min) ]
@@ -45,14 +43,14 @@ class _HomePageState extends State<HomePage> {
 
           // calculate the time elapsed by comparing current time and state time
           var currentTime = DateTime.now();
-          habitList[index][2] = elapsedTime + currentTime.second -
+          habitList[index][2] = elapsedTime +
+              currentTime.second -
               startTime.second +
               60 * (currentTime.minute - startTime.minute) +
               60 * 60 * (currentTime.hour - startTime.hour);
         });
       });
     }
-
   }
 
   void settingsOpend(int index) {
@@ -61,6 +59,37 @@ class _HomePageState extends State<HomePage> {
       builder: (context) {
         return AlertDialog(
           title: Text("Setting for" + habitList[index][0]),
+          actions: [
+            MaterialButton(
+              color: Colors.green[300],
+              child: const Text(
+                "중지",
+                style: TextStyle(color: Colors.white),
+              ),
+              onPressed: () {
+                Timer.periodic(
+                  const Duration(seconds: 1),
+                  (timer) {
+                    setState(() {
+                        timer.cancel();
+                        return;
+                    });
+                  },
+                );
+                Navigator.of(context).pop();
+              },
+            ),
+            MaterialButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              color: Colors.black,
+              child: const Text(
+                "계속",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ],
         );
       },
     );
@@ -68,33 +97,33 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.grey[900],
         title: const Text('Habit Tracker'),
+        centerTitle: true,
       ),
-      body: ListView.builder(
-        itemCount: habitList.length,
-        itemBuilder: (context, index) {
-          return HabitTile(
-            habitName: habitList[index][0],
-            onTimeTap: () {
-              habitStarted(index);
-            },
-            settingsTapped: () {
-              settingsOpend(index);
-            },
-            habitStarted: habitList[index][1],
-            timeSpent: habitList[index][2],
-            timeGoal: habitList[index][3],
-          );
-        },
+      body: Container(
+        padding: const EdgeInsets.only(top: 8),
+        color: Colors.deepPurple[300],
+        child: ListView.builder(
+          itemCount: habitList.length,
+          itemBuilder: (context, index) {
+            return HabitTile(
+              habitName: habitList[index][0],
+              onTimeTap: () {
+                habitStarted(index);
+              },
+              settingsTapped: () {
+                settingsOpend(index);
+              },
+              habitStarted: habitList[index][1],
+              timeSpent: habitList[index][2],
+              timeGoal: habitList[index][3],
+            );
+          },
+        ),
       ),
-      backgroundColor: Colors.grey[300],
-      // floatingActionButton: MyFloatingActionButton(
-      //   onPressed: () {},
-      // ),
     );
   }
 }

@@ -35,7 +35,7 @@ class HabitTile extends StatelessWidget {
       mins = mins.substring(0, 1);
       // 0.98 min -> 0 mins
     }
-    return mins + ':' + secs;
+    return '$mins:$secs';
   }
 
   // calculatet progerss pecentage
@@ -50,7 +50,7 @@ class HabitTile extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: Colors.grey[100],
+          color: Colors.green[200],
           borderRadius: BorderRadius.circular(12),
         ),
         child: Row(
@@ -103,7 +103,7 @@ class HabitTile extends StatelessWidget {
                     Text(
                       '${formatToMinSec(timeSpent)} / ${formatToMinSec(timeGoal)}'
                       ' = ${(percentageCompleted() * 100).toStringAsFixed(0)}%',
-                      style: const TextStyle(color: Colors.grey),
+                      style: const TextStyle(color: Colors.black87),
                     ),
                   ],
                 ),
